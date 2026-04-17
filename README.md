@@ -9,9 +9,10 @@ A Spring Boot-based microservice that manages user information with a focus on i
 ### 1. Idempotent User Creation (Request ID Based)
 - Each create request includes a **requestId**.
 - Behavior:
-  - First request with a new `requestId` → creates a new user.
-  - Subsequent requests with differnt request payload and the same `requestId` → returns the already created user (no duplicate creation).
-  - Subsequent requests with same request payload and the same `requestId` → returns the already created user (no duplicate creation).
+
+- First request with a new `requestId` → creates a new user using the provided request payload.
+- Subsequent requests with the same `requestId` → returns the already created user (no duplicate creation).
+  
 
 #### ✅ Benefits
 - Prevents duplicate records  
@@ -30,7 +31,6 @@ A Spring Boot-based microservice that manages user information with a focus on i
 
 ### 3. Unified Create & Update API (POST Based)
 - Both create and update operations use **POST** requests.
-- Endpoint - http://localhost:8080/user?requestid=<>
 
 #### How it works:
 - If the request payload contains an `id` → **Update operation**
@@ -42,17 +42,15 @@ A Spring Boot-based microservice that manages user information with a focus on i
 
 #### Fetch All Users
 - Retrieve all user records.
-- Endpoint - http://localhost:8080/user/all
 
 #### Fetch Users with Pagination
 - Supports pagination with default values:
   - Page number: `0`
   - Page size: `10`
-- Endpoint - http://localhost:8080/user?pageNumber=<>&pageSize=<>
+
 ---
 ### 4. DELETE API
 - When a user is deleted, the associated `requestId` is also deleted.
-- Endpoint: `DELETE http://localhost:8080/user/{id}`
 
 ---
 
@@ -71,7 +69,7 @@ A Spring Boot-based microservice that manages user information with a focus on i
 **POST** `user?requestid=<id>`
 
 **Description:**  
-Creates a new user or updates an existing user. It is totally optional to provide the request id. <br>
+Creates a new user or updates an existing user. It is totally an **optional** to provide the **request id**. <br>
 The default value of requestid is `""`
 
 **Request Body:**
@@ -86,3 +84,29 @@ The default value of requestid is `""`
     "state":"WB",
     "city":"Kolkata"
 }
+```
+### 2. Get All Users
+**GET** `/users`
+
+**Description:**  
+Fetches all users.
+
+---
+
+### 3. Get Users with Pagination
+**GET** `/users?page=0&size=10`
+
+**Description:**  
+Fetches users with pagination.
+
+**Default Values:**
+- Page: 0  
+- Size: 10  
+
+---
+
+### 4. Delete User
+**DELETE** `/user/{id}`
+
+**Description:**  
+Deletes a user by ID. The associated `requestId` is also removed.
