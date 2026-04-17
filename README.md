@@ -73,7 +73,7 @@ This approach implements a partial (sparse) update.
 **POST** `user?requestid=<id>`
 
 **Description:**  
-Creates a new user or updates an existing user. It is totally an **optional** to provide the **request id**. <br>
+Creates a new user or updates an existing user. It is totally **optional** to provide the **request id**. <br>
 The default value of requestid is `""`
 
 **Request Body:**
