@@ -35,6 +35,10 @@ A Spring Boot-based microservice that manages user information with a focus on i
 #### How it works:
 - If the request payload contains an `id` → **Update operation**
 - If the request payload does NOT contain an `id` → **Create operation**
+- **Main Feature (Update Operation):**  
+Only the fields that need to be updated must be provided; it is not required to send all fields.  
+If a field is not included in the request, its existing value will be retained (it will not be set to `null`).  
+This approach implements a partial (sparse) update.
 
 ---
 
