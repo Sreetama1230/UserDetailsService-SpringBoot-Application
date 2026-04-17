@@ -10,7 +10,8 @@ A Spring Boot-based microservice that manages user information with a focus on i
 - Each create request includes a **requestId**.
 - Behavior:
   - First request with a new `requestId` → creates a new user.
-  - Subsequent requests with the same `requestId` → returns the already created user (no duplicate creation).
+  - Subsequent requests with differnt request payload and the same `requestId` → returns the already created user (no duplicate creation).
+  - Subsequent requests with same request payload and the same `requestId` → returns the already created user (no duplicate creation).
 
 #### ✅ Benefits
 - Prevents duplicate records  
