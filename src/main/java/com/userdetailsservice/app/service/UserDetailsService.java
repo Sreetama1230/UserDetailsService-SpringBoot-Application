@@ -36,7 +36,7 @@ public class UserDetailsService {
 
 	@Transactional
 	public UserDetails create(UserDetails details, String requestId) {
-		if (requestId == null) {
+		if (requestId.equals("")) {
 			return userDetailsRepository.save(details);
 		} else {
 			if (serviceRequestsRepo.findByRequestId(requestId).isPresent()) {
