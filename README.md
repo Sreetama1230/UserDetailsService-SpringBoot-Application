@@ -47,6 +47,9 @@ This approach implements a partial (sparse) update.
 #### Fetch All Users
 - Retrieve all user records.
 
+#### Fetch One User by Id
+- Retrieve a user with the provided id.
+
 #### Fetch Users with Pagination
 - Supports pagination with default values:
   - Page number: `0`
@@ -109,7 +112,15 @@ Fetches users with pagination.
 
 ---
 
-### 4. Delete User
+### 4. Get Users with Pagination
+**GET** `/users/<id>`
+
+**Description:**  
+Fetche a user details based on the provided id.
+
+---
+
+### 5. Delete User
 **DELETE** `/user/{id}`
 
 **Description:**  
