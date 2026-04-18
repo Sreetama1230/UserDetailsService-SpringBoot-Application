@@ -55,6 +55,14 @@ public class ServiceRequests {
 		this.entityType = entityType;
 	}
 
+	public ServiceRequests(Long id, String requestId, long entityId, long entityType) {
+		super();
+		this.id = id;
+		this.requestId = requestId;
+		this.entityId = entityId;
+		this.entityType = entityType;
+	}
+
 	public ServiceRequests() {
 		super();
 	}

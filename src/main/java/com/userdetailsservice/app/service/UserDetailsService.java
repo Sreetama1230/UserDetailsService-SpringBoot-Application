@@ -36,9 +36,7 @@ public class UserDetailsService {
 
 	@Transactional
 	public UserDetails create(UserDetails details, String requestId) {
-		if (requestId.equals("")) {
-			return userDetailsRepository.save(details);
-		} else {
+			//return the existing one
 			if (serviceRequestsRepo.findByRequestId(requestId).isPresent()) {
 				long id = serviceRequestsRepo.findByRequestId(requestId).get().getEntityId();
 				return userDetailsRepository.findById(id).get();
@@ -53,10 +51,15 @@ public class UserDetailsService {
 				return savedUserDetails;
 			}
 
-		}
+		
 
 	}
 
+	@Transactional
+	public UserDetails create(UserDetails details) {
+		return userDetailsRepository.save(details);
+	}
+	
 	public List<UserDetails> getAll() {
 		return userDetailsRepository.findAll();
 	}
@@ -66,6 +69,14 @@ public class UserDetailsService {
 		return userDetailsRepository.findAll(pageReq);
 	}
 
+	public UserDetails getById(long id) {
+		if(userDetailsRepository.findById(id).isPresent()) {
+			return userDetailsRepository.findById(id).get();
+		}else {
+			throw new UserNotFoundException("user is not present with this id");
+		}
+		
+	}
 	@Transactional
 	public UserDetails delete(long id) {
 		if (id <= 0) {
@@ -87,7 +98,8 @@ public class UserDetailsService {
 	}
 
 	@Transactional
-	public UserDetails update(long id, UserDetails details) {
+	public UserDetails update(UserDetails details) {
+		long id = details.getId();
 		if (id <= 0) {
 			throw new InvalidIdException("Please provide a valid id");
 		} else {
