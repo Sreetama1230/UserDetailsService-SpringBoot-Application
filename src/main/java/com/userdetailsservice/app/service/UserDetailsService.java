@@ -38,7 +38,7 @@ public class UserDetailsService {
 	public UserDetails create(UserDetails details, String requestId) {
 		// return the existing one
 		if (serviceRequestsRepo.findByRequestId(requestId).isPresent()) {
-			long id = serviceRequestsRepo.findByRequestId(requestId).get().getEntityId();
+			long id = serviceRequestsRepo.findByRequestId(requestId).get().getEntityId().getId();
 			return userDetailsRepository.findById(id).get();
 
 		} else {
@@ -47,7 +47,7 @@ public class UserDetailsService {
 			UserDetails savedUserDetails = userDetailsRepository.save(details);
 			LOGGER.info("saving the service request id");
 			serviceRequestsRepo
-					.save(new ServiceRequests(requestId, savedUserDetails.getId(), EntityEnum.USER.getEntityTypeId()));
+					.save(new ServiceRequests(requestId, savedUserDetails, EntityEnum.USER.getEntityTypeId()));
 			return savedUserDetails;
 		}
 
@@ -86,8 +86,8 @@ public class UserDetailsService {
 		} else {
 			if (userDetailsRepository.findById(id).isPresent()) {
 				UserDetails deletedUserDetails = userDetailsRepository.findById(id).get();
-				if (serviceRequestsRepo.findByEntityId(deletedUserDetails.getId()).isPresent()) {
-					long deletedServiceRequestId = serviceRequestsRepo.findByEntityId(deletedUserDetails.getId()).get()
+				if (serviceRequestsRepo.findByEntityId(deletedUserDetails).isPresent()) {
+					long deletedServiceRequestId = serviceRequestsRepo.findByEntityId(deletedUserDetails).get()
 							.getId();
 					LOGGER.info("Deleting the attached service request");
 					serviceRequestsRepo.deleteById(deletedServiceRequestId);

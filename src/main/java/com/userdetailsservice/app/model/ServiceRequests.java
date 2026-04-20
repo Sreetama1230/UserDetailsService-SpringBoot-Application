@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class ServiceRequests {
@@ -14,8 +16,10 @@ public class ServiceRequests {
 	private Long id;
 	@Column
 	private String requestId;
-	@Column
-	private long entityId;
+	
+	@ManyToOne
+	@JoinColumn(name="entity_id")
+	private UserDetails entityId;
 
 	@Column
 	private long entityType;
@@ -32,14 +36,6 @@ public class ServiceRequests {
 		this.requestId = requestId;
 	}
 
-	public long getEntityId() {
-		return entityId;
-	}
-
-	public void setEntityId(long entityId) {
-		this.entityId = entityId;
-	}
-
 	public long getEntityType() {
 		return entityType;
 	}
@@ -48,23 +44,37 @@ public class ServiceRequests {
 		this.entityType = entityType;
 	}
 
-	public ServiceRequests(String requestId, long entityId, long entityType) {
+
+
+	public UserDetails getEntityId() {
+		return entityId;
+	}
+
+	public void setEntityId(UserDetails entityId) {
+		this.entityId = entityId;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public ServiceRequests() {
+		super();
+	}
+
+	public ServiceRequests(String requestId, UserDetails entityId, long entityType) {
 		super();
 		this.requestId = requestId;
 		this.entityId = entityId;
 		this.entityType = entityType;
 	}
 
-	public ServiceRequests(Long id, String requestId, long entityId, long entityType) {
+	public ServiceRequests(Long id, String requestId, UserDetails entityId, long entityType) {
 		super();
 		this.id = id;
 		this.requestId = requestId;
 		this.entityId = entityId;
 		this.entityType = entityType;
-	}
-
-	public ServiceRequests() {
-		super();
 	}
 
 }

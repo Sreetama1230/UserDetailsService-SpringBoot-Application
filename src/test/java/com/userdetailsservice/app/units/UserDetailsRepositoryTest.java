@@ -65,7 +65,7 @@ public class UserDetailsRepositoryTest {
 		String req = UUID.randomUUID().toString();
 
 		UserDetails savedUserDetails = detailsRepository.save(newUserDetails);
-		ServiceRequests newRequests = new ServiceRequests(req, savedUserDetails.getId(),
+		ServiceRequests newRequests = new ServiceRequests(req, savedUserDetails,
 				EntityEnum.USER.getEntityTypeId());
 
 		ServiceRequests savedServiceRequests =	serviceRequestsRepo.save(newRequests);

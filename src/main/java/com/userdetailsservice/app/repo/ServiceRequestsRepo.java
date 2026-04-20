@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.userdetailsservice.app.model.ServiceRequests;
+import com.userdetailsservice.app.model.UserDetails;
 
 public interface ServiceRequestsRepo extends JpaRepository<ServiceRequests, Long> {
 
@@ -14,6 +15,6 @@ public interface ServiceRequestsRepo extends JpaRepository<ServiceRequests, Long
 	Optional<ServiceRequests> findByRequestId( @Param("requestId") String requestId);
 	
 	@Query("Select s from ServiceRequests s where entityId = :entityId")
-	Optional<ServiceRequests> findByEntityId( @Param("entityId") long entityId);
+	Optional<ServiceRequests> findByEntityId( @Param("entityId") UserDetails entityId);
 
 }

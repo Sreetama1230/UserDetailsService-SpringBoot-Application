@@ -49,7 +49,7 @@ public class UserDetailsServiceTest {
 		UserDetails savedUserDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata");
 
-		ServiceRequests savedRequests = new ServiceRequests(1L, req, savedUserDetails.getId(),
+		ServiceRequests savedRequests = new ServiceRequests(1L, req, savedUserDetails,
 				EntityEnum.USER.getEntityTypeId());
 
 		when(detailsRepository.save(newUserDetails)).thenReturn(savedUserDetails);
@@ -156,12 +156,12 @@ public class UserDetailsServiceTest {
 				"IND", "WB", "Kolkata");
 		
 		ServiceRequests savedRequests = new ServiceRequests(1L, UUID.randomUUID().toString()
-				, dbUserDetails.getId(),
+				, dbUserDetails,
 				EntityEnum.USER.getEntityTypeId());
 	
 		when(detailsRepository.findById(1L)).thenReturn(Optional.of(dbUserDetails));
 
-		when(serviceRequestsRepo.findByEntityId(dbUserDetails.getId()))
+		when(serviceRequestsRepo.findByEntityId(dbUserDetails))
 		           .thenReturn(Optional.of(savedRequests));
 	
 		UserDetails userDetails = detailsService.delete(1L);
