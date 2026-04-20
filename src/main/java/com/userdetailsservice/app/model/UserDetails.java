@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 @Entity
 public class UserDetails {
 
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -22,6 +23,9 @@ public class UserDetails {
 	@Column
 	private String phoneNo;
 
+	@Column
+	private String username;
+	
 	@Column
 	private String country;
 	@Column
@@ -76,35 +80,55 @@ public class UserDetails {
 	public void setCity(String city) {
 		this.city = city;
 	}
+
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public UserDetails() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public UserDetails(String name, String role, String email, String phoneNo, String country, String state,
-			String city) {
-		super();
-		this.name = name;
-		this.role = role;
-		this.email = email;
-		this.phoneNo = phoneNo;
-		this.country = country;
-		this.state = state;
-		this.city = city;
-	}
-	public UserDetails(Long id, String name, String role, String email, String phoneNo, String country, String state,
-			String city) {
+	
+	public UserDetails(Long id, String name, String role, String email, String phoneNo, String username, String country,
+			String state, String city) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.role = role;
 		this.email = email;
 		this.phoneNo = phoneNo;
+		this.username = username;
 		this.country = country;
 		this.state = state;
 		this.city = city;
 	}
-	
-	
+
+	public UserDetails(String name, String role, String email, String phoneNo, String username, String country,
+			String state, String city) {
+		super();
+		this.name = name;
+		this.role = role;
+		this.email = email;
+		this.phoneNo = phoneNo;
+		this.username = username;
+		this.country = country;
+		this.state = state;
+		this.city = city;
+	}
+
+	public UserDetails(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+
 	
 	
 	

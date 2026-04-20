@@ -5,9 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.userdetailsservice.app.model.ExceptionObject;
-import com.userdetailsservice.app.model.UserNotFoundException;
-
 @ControllerAdvice
 public class CustomExceptionHandler {
 	

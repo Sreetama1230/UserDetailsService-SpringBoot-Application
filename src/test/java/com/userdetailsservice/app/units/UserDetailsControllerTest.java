@@ -2,8 +2,8 @@ package com.userdetailsservice.app.units;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.userdetailsservice.app.controller.UserDetailsController;
+import com.userdetailsservice.app.exp.UserNotFoundException;
 import com.userdetailsservice.app.model.UserDetails;
-import com.userdetailsservice.app.model.UserNotFoundException;
 import com.userdetailsservice.app.service.UserDetailsService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +46,7 @@ public class UserDetailsControllerTest {
 
 	@BeforeEach
 	public void setUp() {
-		userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219", "IND", "WB",
+		userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser", "IND", "WB",
 				"Kolkata");
 
 	}
@@ -54,7 +54,7 @@ public class UserDetailsControllerTest {
 	@Test
 	public void testGetAll() throws Exception {
 		UserDetails userDetails2 = new UserDetails(2L, "test-user2", "TEST-ROLE", "testuser2@gmail.com", "9876548219",
-				"IND", "MH", "Pune");
+				"testuser2","IND", "MH", "Pune");
 		List<UserDetails> users = Arrays.asList(userDetails, userDetails2);
 		when(userDetailsService.getAll()).thenReturn(users);
 
@@ -66,7 +66,7 @@ public class UserDetailsControllerTest {
 
 	@Test
 	public void testGetAllWithPagination() throws Exception {
-		UserDetails userDetails2 = new UserDetails(2L, "test-user2", "TEST-ROLE", "testuser2@gmail.com", "9876548219",
+		UserDetails userDetails2 = new UserDetails(2L, "test-user2", "TEST-ROLE", "testuser2@gmail.com", "9876548219","testuser2",
 				"IND", "MH", "Pune");
 		List<UserDetails> users = Arrays.asList(userDetails, userDetails2);
 		Page<UserDetails> pages = new PageImpl<>(users);
@@ -103,7 +103,7 @@ public class UserDetailsControllerTest {
 	
 	@Test
 	public void testCreate() throws Exception {
-		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
+		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata");
 		String req = UUID.randomUUID().toString();
 		when(userDetailsService.create(any(UserDetails.class), eq(req))).thenReturn(userDetails);
@@ -121,7 +121,7 @@ public class UserDetailsControllerTest {
 	
 	@Test
 	public void testCreateWithOutRequestId() throws Exception {
-		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
+		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata");
 	
 		when(userDetailsService.create(any(UserDetails.class))).thenReturn(userDetails);

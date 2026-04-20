@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.userdetailsservice.app.entityenum.EntityEnum;
 import com.userdetailsservice.app.exp.InvalidIdException;
+import com.userdetailsservice.app.exp.UserNotFoundException;
 import com.userdetailsservice.app.model.ServiceRequests;
 import com.userdetailsservice.app.model.UserDetails;
-import com.userdetailsservice.app.model.UserNotFoundException;
 import com.userdetailsservice.app.repo.ServiceRequestsRepo;
 import com.userdetailsservice.app.repo.UserDetailsRepository;
 
@@ -36,22 +36,20 @@ public class UserDetailsService {
 
 	@Transactional
 	public UserDetails create(UserDetails details, String requestId) {
-			//return the existing one
-			if (serviceRequestsRepo.findByRequestId(requestId).isPresent()) {
-				long id = serviceRequestsRepo.findByRequestId(requestId).get().getEntityId();
-				return userDetailsRepository.findById(id).get();
+		// return the existing one
+		if (serviceRequestsRepo.findByRequestId(requestId).isPresent()) {
+			long id = serviceRequestsRepo.findByRequestId(requestId).get().getEntityId();
+			return userDetailsRepository.findById(id).get();
 
-			} else {
-				// save both
-				LOGGER.info("saving user details");
-				UserDetails savedUserDetails = userDetailsRepository.save(details);
-				LOGGER.info("saving the service request id");
-				serviceRequestsRepo.save(
-						new ServiceRequests(requestId, savedUserDetails.getId(), EntityEnum.USER.getEntityTypeId()));
-				return savedUserDetails;
-			}
-
-		
+		} else {
+			// save both
+			LOGGER.info("saving user details");
+			UserDetails savedUserDetails = userDetailsRepository.save(details);
+			LOGGER.info("saving the service request id");
+			serviceRequestsRepo
+					.save(new ServiceRequests(requestId, savedUserDetails.getId(), EntityEnum.USER.getEntityTypeId()));
+			return savedUserDetails;
+		}
 
 	}
 
@@ -59,7 +57,7 @@ public class UserDetailsService {
 	public UserDetails create(UserDetails details) {
 		return userDetailsRepository.save(details);
 	}
-	
+
 	public List<UserDetails> getAll() {
 		return userDetailsRepository.findAll();
 	}
@@ -70,13 +68,17 @@ public class UserDetailsService {
 	}
 
 	public UserDetails getById(long id) {
-		if(userDetailsRepository.findById(id).isPresent()) {
+		if (id <= 0) {
+			throw new InvalidIdException("Please provide a valid id");
+		}
+		if (userDetailsRepository.findById(id).isPresent()) {
 			return userDetailsRepository.findById(id).get();
-		}else {
+		} else {
 			throw new UserNotFoundException("user is not present with this id");
 		}
-		
+
 	}
+
 	@Transactional
 	public UserDetails delete(long id) {
 		if (id <= 0) {
@@ -84,10 +86,13 @@ public class UserDetailsService {
 		} else {
 			if (userDetailsRepository.findById(id).isPresent()) {
 				UserDetails deletedUserDetails = userDetailsRepository.findById(id).get();
-				long deletedServiceRequestId = serviceRequestsRepo.findByEntityId(deletedUserDetails.getId()).get()
-						.getId();
-				LOGGER.info("Deleting the attached service request");
-				serviceRequestsRepo.deleteById(deletedServiceRequestId);
+				if (serviceRequestsRepo.findByEntityId(deletedUserDetails.getId()).isPresent()) {
+					long deletedServiceRequestId = serviceRequestsRepo.findByEntityId(deletedUserDetails.getId()).get()
+							.getId();
+					LOGGER.info("Deleting the attached service request");
+					serviceRequestsRepo.deleteById(deletedServiceRequestId);
+				}
+
 				LOGGER.info("Deleting the user information");
 				userDetailsRepository.deleteById(deletedUserDetails.getId());
 				return deletedUserDetails;
@@ -109,35 +114,38 @@ public class UserDetailsService {
 				// city
 				if (details.getCity() != null) {
 					dbUserDetails.setCity(details.getCity());
-				} 
-				
+				}
+
 				// country
 				if (details.getCountry() != null) {
 					dbUserDetails.setCountry(details.getCountry());
-				} 
+				}
 
 				// email
 				if (details.getEmail() != null) {
 					dbUserDetails.setEmail(details.getEmail());
-				} 
-
-				//name
+				}
+				// username
+				if (details.getUsername() != null) {
+					dbUserDetails.setUsername(details.getUsername());
+				}
+				// name
 				if (details.getName() != null) {
 					dbUserDetails.setName(details.getName());
-				} 
-				//phone no
+				}
+				// phone no
 				if (details.getPhoneNo() != null) {
 					dbUserDetails.setPhoneNo(details.getPhoneNo());
 				}
-				//role
+				// role
 				if (details.getRole() != null) {
 					dbUserDetails.setRole(details.getRole());
 				}
-				//state
+				// state
 				if (details.getState() != null) {
 					dbUserDetails.setState(details.getState());
 				}
-				
+
 				return userDetailsRepository.save(dbUserDetails);
 			} else {
 				throw new UserNotFoundException("no user found with this id");

@@ -41,10 +41,10 @@ public class UserDetailsControllerTests {
 	private TestRestTemplate testRestTemplate;
 	@Autowired
 	private UserDetailsRepository userDetailsRepository;
-	
+
 	@Autowired
 	private ServiceRequestsRepo serviceRequestsRepo;
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
 
@@ -57,19 +57,16 @@ public class UserDetailsControllerTests {
 		headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 	}
-	
-	
+
 	@AfterEach
 	void cleanUp() {
-	    serviceRequestsRepo.deleteAll();
-	    userDetailsRepository.deleteAll();
+		serviceRequestsRepo.deleteAll();
+		userDetailsRepository.deleteAll();
 	}
 
 	private String createURLWithPort() {
 		return "http://localhost:" + port + "/user";
 	}
-	
-
 
 	// get all
 	@Test
@@ -96,12 +93,11 @@ public class UserDetailsControllerTests {
 //	@Sql(statements = "DELETE FROM user_details WHERE id='10009'", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 	public void testGetAllByPagination() {
 		HttpEntity<String> entity = new HttpEntity<>(null, headers);
-		ResponseEntity<String> resp = 
-				testRestTemplate.exchange(createURLWithPort()+"?pageNumber=0&pageSize=2", HttpMethod.GET, entity,
-				String.class);
+		ResponseEntity<String> resp = testRestTemplate.exchange(createURLWithPort() + "?pageNumber=0&pageSize=2",
+				HttpMethod.GET, entity, String.class);
 
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
-	
+
 		String body = resp.getBody();
 		assertNotNull(body.contains("content"));
 		assertTrue(body.contains("Priya"));
@@ -126,6 +122,32 @@ public class UserDetailsControllerTests {
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		assertEquals(details.getCity(), userDetailsService.getById(100066).getCity());
 		assertEquals(details.getCity(), userDetailsRepository.findById(100066L).orElse(null).getCity());
+
+	}
+
+	@Test
+//	@Sql(statements = "DELETE FROM user_details WHERE id='100066'", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+	public void testGetByIdException() throws JsonProcessingException {
+		HttpEntity<String> entity = new HttpEntity<>(null, headers);
+		ResponseEntity<String> resp = testRestTemplate.exchange(createURLWithPort() + "/100096", HttpMethod.GET, entity,
+				String.class);
+
+		String details = resp.getBody();
+		assertNotNull(details);
+		assertEquals(HttpStatus.NOT_FOUND, resp.getStatusCode());
+		assertTrue(details.contains("user is not present with this id"));
+
+	}
+	
+	public void testGetByIdInvalidIdException() throws JsonProcessingException {
+		HttpEntity<String> entity = new HttpEntity<>(null, headers);
+		ResponseEntity<String> resp = testRestTemplate.exchange(createURLWithPort() + "/0", HttpMethod.GET, entity,
+				String.class);
+
+		String details = resp.getBody();
+		assertNotNull(details);
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+		assertTrue(details.contains("Please provide a valid id"));
 
 	}
 
@@ -160,9 +182,9 @@ public class UserDetailsControllerTests {
 
 		HttpEntity<String> entity = new HttpEntity<>(objectMapper.writeValueAsString(newUserDetails), headers);
 
-		String reqId= UUID.randomUUID().toString();
-		ResponseEntity<UserDetails> resp = testRestTemplate.exchange(createURLWithPort()+"?requestid="+reqId, HttpMethod.POST, entity,
-				UserDetails.class);
+		String reqId = UUID.randomUUID().toString();
+		ResponseEntity<UserDetails> resp = testRestTemplate.exchange(createURLWithPort() + "?requestid=" + reqId,
+				HttpMethod.POST, entity, UserDetails.class);
 
 		UserDetails details = resp.getBody();
 
@@ -174,6 +196,7 @@ public class UserDetailsControllerTests {
 		assertEquals(details.getCity(), userDetailsRepository.save(newUserDetails).getCity());
 
 	}
+
 	@Test
 //	@Sql(statements = "DELETE FROM user_details WHERE phone_no='9865487651'", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 	public void testUpdate() throws JsonProcessingException {

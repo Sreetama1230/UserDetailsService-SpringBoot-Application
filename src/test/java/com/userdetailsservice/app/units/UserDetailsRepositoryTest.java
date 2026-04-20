@@ -44,9 +44,9 @@ public class UserDetailsRepositoryTest {
 
 	@BeforeEach
 	public void setUp() {
-		userDetails1 = new UserDetails(1L, "test-user-1", "TEST-ROLE", "testuser1@gmail.com", "9806543219", "IND", "WB",
+		userDetails1 = new UserDetails(1L, "test-user-1", "TEST-ROLE", "testuser1@gmail.com", "9806543219","testuser1", "IND", "WB",
 				"Kolkata");
-		userDetails2 = new UserDetails(2L, "test-user-2", "TEST-ROLE", "testuser2@gmail.com", "9806843219", "IND", "M",
+		userDetails2 = new UserDetails(2L, "test-user-2", "TEST-ROLE", "testuser2@gmail.com", "9806843219","testuser2" ,"IND", "M",
 				"Pune");
 
 	}
@@ -60,7 +60,7 @@ public class UserDetailsRepositoryTest {
 	@Test
 	public void testCreate() {
 
-		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
+		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata");
 		String req = UUID.randomUUID().toString();
 

@@ -22,6 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.userdetailsservice.app.entityenum.EntityEnum;
+import com.userdetailsservice.app.exp.UserNotFoundException;
 import com.userdetailsservice.app.model.ServiceRequests;
 import com.userdetailsservice.app.model.UserDetails;
 import com.userdetailsservice.app.repo.ServiceRequestsRepo;
@@ -42,10 +43,10 @@ public class UserDetailsServiceTest {
 	@Test
 	public void testCreate() {
 
-		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
+		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata");
 		String req = UUID.randomUUID().toString();
-		UserDetails savedUserDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
+		UserDetails savedUserDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata");
 
 		ServiceRequests savedRequests = new ServiceRequests(1L, req, savedUserDetails.getId(),
@@ -67,9 +68,9 @@ public class UserDetailsServiceTest {
 
 	@Test
 	public void testGetAll() {
-		UserDetails userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
+		UserDetails userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata");
-		UserDetails userDetails2 = new UserDetails(2L, "test-user2", "TEST-ROLE", "testuser2@gmail.com", "9876548219",
+		UserDetails userDetails2 = new UserDetails(2L, "test-user2", "TEST-ROLE", "testuser2@gmail.com", "9876548219","testuser2",
 				"IND", "MH", "Pune");
 
 		when(detailsRepository.findAll()).thenReturn(Arrays.asList(userDetails, userDetails2));
@@ -81,9 +82,9 @@ public class UserDetailsServiceTest {
 
 	@Test
 	public void testGetAllWithPagination() {
-		UserDetails userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
+		UserDetails userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata");
-		UserDetails userDetails2 = new UserDetails(2L, "test-user2", "TEST-ROLE", "testuser2@gmail.com", "9876548219",
+		UserDetails userDetails2 = new UserDetails(2L, "test-user2", "TEST-ROLE", "testuser2@gmail.com", "9876548219","testuser2",
 				"IND", "MH", "Pune");
 		List<UserDetails> users = new ArrayList<>(List.of(userDetails, userDetails2));
 
@@ -102,7 +103,7 @@ public class UserDetailsServiceTest {
 
 	@Test
 	public void testGetById() {
-		UserDetails userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
+		UserDetails userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata");
 		when(detailsRepository.findById(1L)).thenReturn(Optional.of(userDetails));
 		UserDetails actUserDetails = detailsService.getById(1L);
@@ -111,13 +112,28 @@ public class UserDetailsServiceTest {
 
 	}
 	
+	@Test
+	public void testGetByIdException() {
+	
+		when(detailsRepository.findById(10000L)).thenReturn(Optional.empty());
+		
+		UserNotFoundException exception =	assertThrows(UserNotFoundException.class, ()->{
+			detailsService.getById(10000L);
+		});
+		
+	assertNotNull(exception);
+	assertEquals("user is not present with this id", exception.getMessage());
+		
+
+	}
+	
 
 	@Test
 	public void testUpdate() {
-		UserDetails dbUserDetails = new UserDetails(1L,"test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
+		UserDetails dbUserDetails = new UserDetails(1L,"test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata");
 		
-		UserDetails updatedUserDetails = new UserDetails(1L, "test-updated-user", "TEST-ROLE", "testupdateduser@gmail.com", "9876543219",
+		UserDetails updatedUserDetails = new UserDetails(1L, "test-updated-user", "TEST-ROLE", "testupdateduser@gmail.com", "9876543219","testuserupdated",
 				"IND", "WB", "Kol");
 
 		when(detailsRepository.findById(1L)).thenReturn(Optional.of(dbUserDetails));
@@ -136,7 +152,7 @@ public class UserDetailsServiceTest {
 	@Test
 	public void testDelete() {
 		
-		UserDetails dbUserDetails = new UserDetails(1L,"test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
+		UserDetails dbUserDetails = new UserDetails(1L,"test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata");
 		
 		ServiceRequests savedRequests = new ServiceRequests(1L, UUID.randomUUID().toString()
