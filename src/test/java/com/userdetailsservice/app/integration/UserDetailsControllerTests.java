@@ -241,6 +241,7 @@ public class UserDetailsControllerTests {
 		UserDetails details = resp.getBody();
 		assertEquals(resp.getStatusCode(), HttpStatus.OK);
 		assertNotNull(details);
+		assertTrue(userDetailsRepository.findById(100066L).isEmpty());
 
 	}
 }
