@@ -59,6 +59,8 @@ This approach implements a partial (sparse) update.
 ### 4. DELETE API
 - When a user is deleted, the associated `requestId` is also deleted.
 
+### 5. TESTS
+- Added `unit` tests and `integration` tests.
 ---
 
 ## 🛠️ Tech Stack
