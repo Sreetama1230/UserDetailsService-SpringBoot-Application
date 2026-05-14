@@ -156,7 +156,7 @@ public class UserDetailsControllerTests {
 	public void testCreate() throws JsonProcessingException {
 
 		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
-				"testuser", "IND", "WB", "Kolkata");
+				"testuser", "IND", "WB", "Kolkata","0");
 
 		HttpEntity<String> entity = new HttpEntity<>(objectMapper.writeValueAsString(newUserDetails), headers);
 
@@ -178,7 +178,7 @@ public class UserDetailsControllerTests {
 	public void testCreateWithRequestId() throws JsonProcessingException {
 
 		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
-				"testuser", "IND", "WB", "Kolkata");
+				"testuser", "IND", "WB", "Kolkata","0");
 
 		HttpEntity<String> entity = new HttpEntity<>(objectMapper.writeValueAsString(newUserDetails), headers);
 
@@ -204,7 +204,7 @@ public class UserDetailsControllerTests {
 		// first create
 
 		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219",
-				"testuser", "IND", "WB", "Kolkata");
+				"testuser", "IND", "WB", "Kolkata","0");
 
 		HttpEntity<String> entity = new HttpEntity<>(objectMapper.writeValueAsString(newUserDetails), headers);
 

@@ -9,6 +9,20 @@ import jakarta.persistence.Id;
 @Entity
 public class UserDetails {
 
+	public UserDetails(Long id, String name, String role, String email, String phoneNo, String username, String country,
+			String state, String city, String syncToken) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.role = role;
+		this.email = email;
+		this.phoneNo = phoneNo;
+		this.username = username;
+		this.country = country;
+		this.state = state;
+		this.city = city;
+		this.syncToken = syncToken;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +36,8 @@ public class UserDetails {
 	private String email;
 	@Column
 	private String phoneNo;
-
 	@Column
 	private String username;
-	
 	@Column
 	private String country;
 	@Column
@@ -33,6 +45,9 @@ public class UserDetails {
 	@Column
 	private String city;
 	
+	//maintain the change count
+	@Column
+	private String syncToken;
 	
 	public Long getId() {
 		return id;
@@ -94,39 +109,37 @@ public class UserDetails {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public UserDetails(Long id, String name, String role, String email, String phoneNo, String username, String country,
-			String state, String city) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.role = role;
-		this.email = email;
-		this.phoneNo = phoneNo;
-		this.username = username;
-		this.country = country;
-		this.state = state;
-		this.city = city;
-	}
 
-	public UserDetails(String name, String role, String email, String phoneNo, String username, String country,
-			String state, String city) {
-		super();
-		this.name = name;
-		this.role = role;
-		this.email = email;
-		this.phoneNo = phoneNo;
-		this.username = username;
-		this.country = country;
-		this.state = state;
-		this.city = city;
-	}
 
 	public UserDetails(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
+
+	public String getSyncToken() {
+		return syncToken;
+	}
+
+	public void setSyncToken(String syncToken) {
+		this.syncToken = syncToken;
+	}
+
+	public UserDetails(String name, String role, String email, String phoneNo, String username, String country,
+			String state, String city, String syncToken) {
+		super();
+		this.name = name;
+		this.role = role;
+		this.email = email;
+		this.phoneNo = phoneNo;
+		this.username = username;
+		this.country = country;
+		this.state = state;
+		this.city = city;
+		this.syncToken = syncToken;
+	}
+
+	
 
 
 	

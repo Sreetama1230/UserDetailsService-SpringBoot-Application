@@ -47,14 +47,14 @@ public class UserDetailsControllerTest {
 	@BeforeEach
 	public void setUp() {
 		userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser", "IND", "WB",
-				"Kolkata");
+				"Kolkata","0");
 
 	}
 
 	@Test
 	public void testGetAll() throws Exception {
 		UserDetails userDetails2 = new UserDetails(2L, "test-user2", "TEST-ROLE", "testuser2@gmail.com", "9876548219",
-				"testuser2","IND", "MH", "Pune");
+				"testuser2","IND", "MH", "Pune","0");
 		List<UserDetails> users = Arrays.asList(userDetails, userDetails2);
 		when(userDetailsService.getAll()).thenReturn(users);
 
@@ -67,7 +67,7 @@ public class UserDetailsControllerTest {
 	@Test
 	public void testGetAllWithPagination() throws Exception {
 		UserDetails userDetails2 = new UserDetails(2L, "test-user2", "TEST-ROLE", "testuser2@gmail.com", "9876548219","testuser2",
-				"IND", "MH", "Pune");
+				"IND", "MH", "Pune","0");
 		List<UserDetails> users = Arrays.asList(userDetails, userDetails2);
 		Page<UserDetails> pages = new PageImpl<>(users);
 		when(userDetailsService.getAllWithPagination(0, 2)).thenReturn(pages);
@@ -104,7 +104,7 @@ public class UserDetailsControllerTest {
 	@Test
 	public void testCreate() throws Exception {
 		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
-				"IND", "WB", "Kolkata");
+				"IND", "WB", "Kolkata","0");
 		String req = UUID.randomUUID().toString();
 		when(userDetailsService.create(any(UserDetails.class), eq(req))).thenReturn(userDetails);
 
@@ -122,7 +122,7 @@ public class UserDetailsControllerTest {
 	@Test
 	public void testCreateWithOutRequestId() throws Exception {
 		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
-				"IND", "WB", "Kolkata");
+				"IND", "WB", "Kolkata","0");
 	
 		when(userDetailsService.create(any(UserDetails.class))).thenReturn(userDetails);
 

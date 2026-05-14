@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.userdetailsservice.app.entityenum.EntityEnum;
 import com.userdetailsservice.app.exp.InvalidIdException;
+import com.userdetailsservice.app.exp.MissingOrInvalidSyncTokenException;
+import com.userdetailsservice.app.exp.StaleObjectError;
 import com.userdetailsservice.app.exp.UserNotFoundException;
 import com.userdetailsservice.app.model.ServiceRequests;
 import com.userdetailsservice.app.model.UserDetails;
@@ -44,6 +46,8 @@ public class UserDetailsService {
 		} else {
 			// save both
 			LOGGER.info("saving user details");
+			// synctoken will start with 0
+			details.setSyncToken("0");
 			UserDetails savedUserDetails = userDetailsRepository.save(details);
 			LOGGER.info("saving the service request id");
 			serviceRequestsRepo
@@ -55,6 +59,8 @@ public class UserDetailsService {
 
 	@Transactional
 	public UserDetails create(UserDetails details) {
+		// synctoken will start with 0
+		details.setSyncToken("0");
 		return userDetailsRepository.save(details);
 	}
 
@@ -84,11 +90,12 @@ public class UserDetailsService {
 		if (id <= 0) {
 			throw new InvalidIdException("Please provide a valid id");
 		} else {
+
 			if (userDetailsRepository.findById(id).isPresent()) {
 				UserDetails deletedUserDetails = userDetailsRepository.findById(id).get();
+
 				if (serviceRequestsRepo.findByEntityId(deletedUserDetails).isPresent()) {
-					long deletedServiceRequestId = serviceRequestsRepo.findByEntityId(deletedUserDetails).get()
-							.getId();
+					long deletedServiceRequestId = serviceRequestsRepo.findByEntityId(deletedUserDetails).get().getId();
 					LOGGER.info("Deleting the attached service request");
 					serviceRequestsRepo.deleteById(deletedServiceRequestId);
 				}
@@ -108,42 +115,98 @@ public class UserDetailsService {
 		if (id <= 0) {
 			throw new InvalidIdException("Please provide a valid id");
 		} else {
+			if (details.getSyncToken() == null) {
+				throw new MissingOrInvalidSyncTokenException(
+						"Required field is missing : please provide the SyncToken value");
+			}
 			if (userDetailsRepository.findById(id).isPresent()) {
 				UserDetails dbUserDetails = userDetailsRepository.findById(id).get();
+				String currentSynctoken = dbUserDetails.getSyncToken();
+				if (Integer.parseInt(details.getSyncToken()) < Integer.parseInt(currentSynctoken)) {
+					throw new StaleObjectError("Stale Object Error : Please use the latest sync token");
+				} else {
 
-				// city
-				if (details.getCity() != null) {
-					dbUserDetails.setCity(details.getCity());
-				}
+					if (Integer.parseInt(details.getSyncToken()) != Integer.parseInt(currentSynctoken)) {
+						throw new MissingOrInvalidSyncTokenException("Please provide the valid synctoken");
+					}
+					Boolean changeDetected = false;
+					// city
+					if (details.getCity() != null) {
+						if (!(details.getCity().equals(dbUserDetails.getCity()))) {
+							changeDetected = true;
+							dbUserDetails.setCity(details.getCity());
+						}
 
-				// country
-				if (details.getCountry() != null) {
-					dbUserDetails.setCountry(details.getCountry());
-				}
+					}
 
-				// email
-				if (details.getEmail() != null) {
-					dbUserDetails.setEmail(details.getEmail());
-				}
-				// username
-				if (details.getUsername() != null) {
-					dbUserDetails.setUsername(details.getUsername());
-				}
-				// name
-				if (details.getName() != null) {
-					dbUserDetails.setName(details.getName());
-				}
-				// phone no
-				if (details.getPhoneNo() != null) {
-					dbUserDetails.setPhoneNo(details.getPhoneNo());
-				}
-				// role
-				if (details.getRole() != null) {
-					dbUserDetails.setRole(details.getRole());
-				}
-				// state
-				if (details.getState() != null) {
-					dbUserDetails.setState(details.getState());
+					// country
+					if (details.getCountry() != null) {
+						if (!(details.getCountry().equals(dbUserDetails.getCountry()))) {
+							changeDetected = true;
+							dbUserDetails.setCountry(details.getCountry());
+						}
+
+					}
+
+					// email
+					if (details.getEmail() != null) {
+
+						if (!(details.getEmail().equals(dbUserDetails.getEmail()))) {
+							changeDetected = true;
+							dbUserDetails.setEmail(details.getEmail());
+						}
+
+					}
+					// username
+					if (details.getUsername() != null) {
+
+						if (!(details.getUsername().equals(dbUserDetails.getUsername()))) {
+							changeDetected = true;
+							dbUserDetails.setUsername(details.getUsername());
+						}
+
+					}
+					// name
+					if (details.getName() != null) {
+
+						if (!(details.getName().equals(dbUserDetails.getName()))) {
+							changeDetected = true;
+							dbUserDetails.setName(details.getName());
+						}
+
+					}
+					// phone no
+					if (details.getPhoneNo() != null) {
+
+						if (!(details.getPhoneNo().equals(dbUserDetails.getPhoneNo()))) {
+							changeDetected = true;
+							dbUserDetails.setPhoneNo(details.getPhoneNo());
+						}
+
+					}
+
+					// role
+					if (details.getRole() != null) {
+
+						if (!(details.getRole().equals(dbUserDetails.getRole()))) {
+							changeDetected = true;
+							dbUserDetails.setRole(details.getRole());
+						}
+
+					}
+					// state
+					if (details.getState() != null) {
+						if (!(details.getState().equals(dbUserDetails.getState()))) {
+							changeDetected = true;
+							dbUserDetails.setState(details.getState());
+						}
+
+					}
+
+					if (changeDetected) {
+						dbUserDetails.setSyncToken(String.valueOf(Long.parseLong(currentSynctoken) + 1));
+					}
+
 				}
 
 				return userDetailsRepository.save(dbUserDetails);

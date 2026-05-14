@@ -23,4 +23,17 @@ public class CustomExceptionHandler {
 						, exception.getMessage()), HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler
+	public ResponseEntity<ExceptionObject> handleMissingOrInvalidSyncTokenException(MissingOrInvalidSyncTokenException exception){
+		return new ResponseEntity<>(
+				new ExceptionObject("MissingOrInvalidSyncTokenException", HttpStatus.BAD_REQUEST.toString()
+						, exception.getMessage()), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<ExceptionObject> handleStaleObjectError(StaleObjectError exception){
+		return new ResponseEntity<>(
+				new ExceptionObject("StaleObjectError", HttpStatus.BAD_REQUEST.toString()
+						, exception.getMessage()), HttpStatus.BAD_REQUEST);
+	}
 }
