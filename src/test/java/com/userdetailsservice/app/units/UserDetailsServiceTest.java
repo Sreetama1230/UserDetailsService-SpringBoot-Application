@@ -44,10 +44,10 @@ public class UserDetailsServiceTest {
 	public void testCreate() {
 
 		UserDetails newUserDetails = new UserDetails("test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
-				"IND", "WB", "Kolkata");
+				"IND", "WB", "Kolkata","0");
 		String req = UUID.randomUUID().toString();
 		UserDetails savedUserDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
-				"IND", "WB", "Kolkata");
+				"IND", "WB", "Kolkata","0");
 
 		ServiceRequests savedRequests = new ServiceRequests(1L, req, savedUserDetails,
 				EntityEnum.USER.getEntityTypeId());
@@ -69,9 +69,9 @@ public class UserDetailsServiceTest {
 	@Test
 	public void testGetAll() {
 		UserDetails userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
-				"IND", "WB", "Kolkata");
+				"IND", "WB", "Kolkata","0");
 		UserDetails userDetails2 = new UserDetails(2L, "test-user2", "TEST-ROLE", "testuser2@gmail.com", "9876548219","testuser2",
-				"IND", "MH", "Pune");
+				"IND", "MH", "Pune","0");
 
 		when(detailsRepository.findAll()).thenReturn(Arrays.asList(userDetails, userDetails2));
 		List<UserDetails> users = detailsService.getAll();
@@ -83,9 +83,9 @@ public class UserDetailsServiceTest {
 	@Test
 	public void testGetAllWithPagination() {
 		UserDetails userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
-				"IND", "WB", "Kolkata");
+				"IND", "WB", "Kolkata","0");
 		UserDetails userDetails2 = new UserDetails(2L, "test-user2", "TEST-ROLE", "testuser2@gmail.com", "9876548219","testuser2",
-				"IND", "MH", "Pune");
+				"IND", "MH", "Pune","0");
 		List<UserDetails> users = new ArrayList<>(List.of(userDetails, userDetails2));
 
 		Page<UserDetails> expPage = new PageImpl<>(users);
@@ -104,7 +104,7 @@ public class UserDetailsServiceTest {
 	@Test
 	public void testGetById() {
 		UserDetails userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
-				"IND", "WB", "Kolkata");
+				"IND", "WB", "Kolkata","0");
 		when(detailsRepository.findById(1L)).thenReturn(Optional.of(userDetails));
 		UserDetails actUserDetails = detailsService.getById(1L);
 		assertEquals(actUserDetails.getId(), userDetails.getId());
@@ -131,10 +131,10 @@ public class UserDetailsServiceTest {
 	@Test
 	public void testUpdate() {
 		UserDetails dbUserDetails = new UserDetails(1L,"test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
-				"IND", "WB", "Kolkata");
+				"IND", "WB", "Kolkata","0");
 		
 		UserDetails updatedUserDetails = new UserDetails(1L, "test-updated-user", "TEST-ROLE", "testupdateduser@gmail.com", "9876543219","testuserupdated",
-				"IND", "WB", "Kol");
+				"IND", "WB", "Kolkata","0");
 
 		when(detailsRepository.findById(1L)).thenReturn(Optional.of(dbUserDetails));
 		when(detailsRepository.save(dbUserDetails)).thenReturn(updatedUserDetails);
@@ -153,7 +153,7 @@ public class UserDetailsServiceTest {
 	public void testDelete() {
 		
 		UserDetails dbUserDetails = new UserDetails(1L,"test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
-				"IND", "WB", "Kolkata");
+				"IND", "WB", "Kolkata","0");
 		
 		ServiceRequests savedRequests = new ServiceRequests(1L, UUID.randomUUID().toString()
 				, dbUserDetails,
