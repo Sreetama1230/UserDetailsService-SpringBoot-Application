@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.userdetailsservice.app.entityenum.EntityEnum;
@@ -30,10 +31,13 @@ public class UserDetailsService {
 
 	private UserDetailsRepository userDetailsRepository;
 	private ServiceRequestsRepo serviceRequestsRepo;
+	private RedisService redisService;
 
-	UserDetailsService(UserDetailsRepository userDetailsRepository, ServiceRequestsRepo serviceRequestsRepo) {
+	UserDetailsService(UserDetailsRepository userDetailsRepository, ServiceRequestsRepo serviceRequestsRepo,
+			RedisService redisService) {
 		this.userDetailsRepository = userDetailsRepository;
 		this.serviceRequestsRepo = serviceRequestsRepo;
+		this.redisService = redisService;
 	}
 
 	@Transactional
@@ -41,7 +45,26 @@ public class UserDetailsService {
 		// return the existing one
 		if (serviceRequestsRepo.findByRequestId(requestId).isPresent()) {
 			long id = serviceRequestsRepo.findByRequestId(requestId).get().getEntityId().getId();
-			return userDetailsRepository.findById(id).get();
+
+			// using redis to get the cached data
+			if (userDetailsRepository.findById(id).isPresent()) {
+				// adding redis
+				UserDetails userDetails = redisService.get("user_id_" + id, UserDetails.class);
+
+				if (userDetails != null) {
+					LOGGER.info("getting from redis...");
+					return userDetails;
+				} else {
+					UserDetails dbUserDetails = userDetailsRepository.findById(id).get();
+					// save into the redis
+					redisService.set("user_id_" + id, dbUserDetails, 300L);
+					return dbUserDetails;
+				}
+			}else {
+				//should not come here (Deletion time removing both reqId and user)
+				throw new UserNotFoundException("Something unexpected happended : please try with a different request id");
+				
+			}
 
 		} else {
 			// save both
@@ -74,11 +97,23 @@ public class UserDetailsService {
 	}
 
 	public UserDetails getById(long id) {
+
 		if (id <= 0) {
 			throw new InvalidIdException("Please provide a valid id");
 		}
 		if (userDetailsRepository.findById(id).isPresent()) {
-			return userDetailsRepository.findById(id).get();
+			// adding redis
+			UserDetails userDetails = redisService.get("user_id_" + id, UserDetails.class);
+
+			if (userDetails != null) {
+				LOGGER.info("getting from redis...");
+				return userDetails;
+			} else {
+				UserDetails dbUserDetails = userDetailsRepository.findById(id).get();
+				// save into the redis
+				redisService.set("user_id_" + id, dbUserDetails, 300L);
+				return dbUserDetails;
+			}
 		} else {
 			throw new UserNotFoundException("user is not present with this id");
 		}
