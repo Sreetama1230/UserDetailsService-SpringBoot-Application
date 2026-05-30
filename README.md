@@ -40,6 +40,8 @@ Only the fields that need to be updated must be provided; it is not required to 
 If a field is not included in the request, its existing value will be retained (it will not be set to `null`).  
 This approach implements a partial (sparse) update.
 
+- For each user we have a SyncToken field, after creating a user the synctoken will be 0 and each update it will increment by 1. And we have to provide correct syncToken otherwise it will throw ```Stale Object Error```
+
 ---
 
 ### 4. GET APIs
@@ -49,6 +51,7 @@ This approach implements a partial (sparse) update.
 
 #### Fetch One User by Id
 - Retrieve a user with the provided id.
+- Data will be checked in the cache first if present then it will return the data from cache.
 
 #### Fetch Users with Pagination
 - Supports pagination with default values:
@@ -127,3 +130,8 @@ Fetche a user details based on the provided id.
 
 **Description:**  
 Deletes a user by ID. The associated `requestId` is also removed.
+
+---
+
+### 6. Containerization
+Added Docker support for containerizing the application.
