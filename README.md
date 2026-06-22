@@ -1,6 +1,6 @@
 # User Details Service
 
-A Spring Boot-based microservice that manages user information with a focus on idempotency, clean API design, and robust error handling.
+Production-grade user management microservice with idempotency, optimistic locking & Docker support.
 
 ---
 
@@ -11,8 +11,8 @@ A Spring Boot-based microservice that manages user information with a focus on i
 - Behavior:
 
 - First request with a new `requestId` → creates a new user using the provided request payload.
-- Subsequent requests with the same `requestId` → returns the already created user (no duplicate creation).
-  
+- Subsequent requests with the same `requestId` → returns the already created user from cache or DB (no duplicate creation).
+
 
 #### ✅ Benefits
 - Prevents duplicate records  
@@ -40,6 +40,8 @@ Only the fields that need to be updated must be provided; it is not required to 
 If a field is not included in the request, its existing value will be retained (it will not be set to `null`).  
 This approach implements a partial (sparse) update.
 
+- For each user we have a SyncToken field, after creating a user the synctoken will be 0 and each update it will increment by 1. And we have to provide correct syncToken otherwise it will throw ```Stale Object Error```
+
 ---
 
 ### 4. GET APIs
@@ -49,6 +51,7 @@ This approach implements a partial (sparse) update.
 
 #### Fetch One User by Id
 - Retrieve a user with the provided id.
+- Data will be checked in the cache first if present then it will return the data from cache (Redis).
 
 #### Fetch Users with Pagination
 - Supports pagination with default values:
@@ -64,11 +67,12 @@ This approach implements a partial (sparse) update.
 ---
 
 ## 🛠️ Tech Stack
-- Java
-- Spring Boot
+- Java 17
+- Spring Boot 3.x
 - Spring Data JPA
 - REST APIs
-
+- MySQL
+- Redis
 ---
 
 ## 📌 API Overview
@@ -127,3 +131,8 @@ Fetche a user details based on the provided id.
 
 **Description:**  
 Deletes a user by ID. The associated `requestId` is also removed.
+
+---
+
+### 6. Containerization
+Added Docker support for containerizing the application.
