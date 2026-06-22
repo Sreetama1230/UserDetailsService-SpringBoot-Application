@@ -106,17 +106,16 @@ public class UserDetailsControllerTests {
 	}
 
 	@Test
-	@Sql(statements = "INSERT INTO user_details(id,city,country,email,name,phone_no,username,role,state) "
-			+ "VALUES (100066,'Pune','IND','priya@gmail.com','Priya','9876541235','priya1234','ADMIN','MH')", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//	@Sql(statements = "DELETE FROM user_details WHERE id='100066'", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+	@Sql(statements = "INSERT INTO user_details(id,city,country,email,name,phone_no,username,role,state,sync_token) "
+			+ "VALUES (100066,'Pune','IND','priya@gmail.com','Priya','9876541235','priya1234','ADMIN','MH',0)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+
 	public void testGetById() throws JsonProcessingException {
 		HttpEntity<String> entity = new HttpEntity<>(null, headers);
 		ResponseEntity<UserDetails> resp = testRestTemplate.exchange(createURLWithPort() + "/100066", HttpMethod.GET,
 				entity, UserDetails.class);
 
 		UserDetails details = resp.getBody();
-		String expected = "{\"id\":100066,\"name\":\"Priya\",\"role\":\"ADMIN\",\"email\":\"priya@gmail.com\",\"phoneNo\":\"9876541235\",\"username\":\"priya1234\",\"country\":\"IND\",\"state\":\"MH\",\"city\":\"Pune\"}";
-
+		String expected = "{\"id\":100066,\"name\":\"Priya\",\"role\":\"ADMIN\",\"email\":\"priya@gmail.com\",\"phoneNo\":\"9876541235\",\"username\":\"priya1234\",\"country\":\"IND\",\"state\":\"MH\",\"city\":\"Pune\",\"syncToken\":\"0\"}";
 		assertEquals(expected, objectMapper.writeValueAsString(details));
 		assert details != null;
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
@@ -138,7 +137,7 @@ public class UserDetailsControllerTests {
 		assertTrue(details.contains("user is not present with this id"));
 
 	}
-	
+	@Test
 	public void testGetByIdInvalidIdException() throws JsonProcessingException {
 		HttpEntity<String> entity = new HttpEntity<>(null, headers);
 		ResponseEntity<String> resp = testRestTemplate.exchange(createURLWithPort() + "/0", HttpMethod.GET, entity,
@@ -214,14 +213,13 @@ public class UserDetailsControllerTests {
 		UserDetails details = resp.getBody();
 
 		// update
-
+		
 		UserDetails updatedUserDetails = new UserDetails(details.getId(), "testuserupdated");
-
+		updatedUserDetails.setSyncToken("0");
 		entity = new HttpEntity<>(objectMapper.writeValueAsString(updatedUserDetails), headers);
 		resp = testRestTemplate.exchange(createURLWithPort(), HttpMethod.POST, entity, UserDetails.class);
 
 		details = resp.getBody();
-
 		assertNotNull(details);
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		assertEquals(details.getName(), "testuserupdated");
