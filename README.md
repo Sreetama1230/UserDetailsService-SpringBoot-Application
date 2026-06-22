@@ -2,6 +2,10 @@
 
 Production-grade user management microservice with idempotency, optimistic locking & Docker support.
 
+
+# Architecture
+<img width="2720" height="2960" alt="user_details_service_architecture" src="https://github.com/user-attachments/assets/01f3caf5-7df7-482b-aaf8-1129c3e10803" />
+
 ---
 
 ## 🚀 Features
