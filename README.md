@@ -1,6 +1,6 @@
 # User Details Service
 
-A Spring Boot-based microservice that manages user information with a focus on idempotency, clean API design, and robust error handling.
+Production-grade user management microservice with idempotency, optimistic locking & Docker support.
 
 ---
 
