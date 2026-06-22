@@ -74,7 +74,17 @@ This approach implements a partial (sparse) update.
 - MySQL
 - Redis
 ---
-
+## Start the application
+```
+1)git clone <repository-url>
+2)cd UserDetailsService
+```
+---
+## Start all the services
+```
+docker compose up --build
+```
+---
 ## 📌 API Overview
 
 
