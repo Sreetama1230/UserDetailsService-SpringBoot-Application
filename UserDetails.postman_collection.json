@@ -1,0 +1,203 @@
+{
+  "info": {
+    "_postman_id": "0bc88552-fa3c-4672-b4b9-2dc31490b11a",
+    "name": "UserDetails",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49200566",
+    "_collection_link": "https://go.postman.co/collection/49200566-0bc88552-fa3c-4672-b4b9-2dc31490b11a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "create",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"role\":\"ADMIN\",\n    \"name\":\"Riya\",\n    \"username\":\"riya12345\",\n    \"email\":\"riya@123@gmail.com\",\n    \"phoneNo\":\"9867893420\",\n    \"country\":\"IND\",\n    \"state\":\"WB\",\n    \"city\":\"kolkata\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/user?requestid=afbcd",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "user"
+          ],
+          "query": [
+            {
+              "key": "requestid",
+              "value": "afbcd"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\":4,\n    \"role\":\"STUDENT\",\n    \"name\":\"Riy78877a\",\n    \"username\":\"riya12345\",\n    \"email\":\"riya@123@gmail.com\",\n    \"phoneNo\":\"9867893420\",\n    \"country\":\"IND\",\n    \"state\":\"WB\",\n    \"city\":\"kolkata\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/user?requestid=afbcdh",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "user"
+          ],
+          "query": [
+            {
+              "key": "requestid",
+              "value": "afbcdh"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\":4,\n    \"role\":\"STUDENT\",\n    \"name\":\"Riy78877a\",\n    \"username\":\"riya12345\",\n    \"email\":\"riya@123@gmail.com\",\n    \"phoneNo\":\"9867893420\",\n    \"country\":\"IND\",\n    \"state\":\"WB\",\n    \"city\":\"kolkata\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/user/3",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "user",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get all",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"role\":\"ADMIN\",\n    \"name\":\"Riya\",\n    \"username\":\"riya12345\",\n    \"password\":\"riya@123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/user/all",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "user",
+            "all"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get by id",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"role\":\"ADMIN\",\n    \"name\":\"Riya\",\n    \"username\":\"riya12345\",\n    \"password\":\"riya@123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/user/12",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "user",
+            "12"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "pagination get",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"role\":\"ADMIN\",\n    \"name\":\"Riya\",\n    \"username\":\"riya12345\",\n    \"password\":\"riya@123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/user",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "user"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

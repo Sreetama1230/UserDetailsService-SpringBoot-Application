@@ -16,6 +16,9 @@ import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -27,9 +30,12 @@ import com.userdetailsservice.app.model.ServiceRequests;
 import com.userdetailsservice.app.model.UserDetails;
 import com.userdetailsservice.app.repo.ServiceRequestsRepo;
 import com.userdetailsservice.app.repo.UserDetailsRepository;
+import com.userdetailsservice.app.service.RedisService;
 import com.userdetailsservice.app.service.UserDetailsService;
 
 @ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+
 public class UserDetailsServiceTest {
 
 	@Mock
@@ -39,6 +45,15 @@ public class UserDetailsServiceTest {
 
 	@InjectMocks
 	UserDetailsService detailsService;
+	
+	@Mock
+	private RedisTemplate<String, String> redisTemplate;
+
+	@Mock
+	private ValueOperations<String, String> valueOperations;
+
+	@Mock
+	private RedisService redisService;
 
 	@Test
 	public void testCreate() {
@@ -102,10 +117,31 @@ public class UserDetailsServiceTest {
 	}
 
 	@Test
+	public void testGetByIdFromCache() {
+		UserDetails userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
+				"IND", "WB", "Kolkata","0");
+		when(detailsRepository.findById(1L)).thenReturn(Optional.of(userDetails));
+		
+		when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+		
+		when(redisService.get("user_id_1", UserDetails.class)).thenReturn(userDetails);
+		
+		UserDetails actUserDetails = detailsService.getById(1L);
+		assertEquals(actUserDetails.getId(), userDetails.getId());
+		assertEquals(actUserDetails.getCity(), userDetails.getCity());
+
+	}
+	
+	@Test
 	public void testGetById() {
 		UserDetails userDetails = new UserDetails(1L, "test-user", "TEST-ROLE", "testuser@gmail.com", "9876543219","testuser",
 				"IND", "WB", "Kolkata","0");
 		when(detailsRepository.findById(1L)).thenReturn(Optional.of(userDetails));
+		
+		when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+		
+		when(redisService.get("user_id_1", UserDetails.class)).thenReturn(null);
+		
 		UserDetails actUserDetails = detailsService.getById(1L);
 		assertEquals(actUserDetails.getId(), userDetails.getId());
 		assertEquals(actUserDetails.getCity(), userDetails.getCity());

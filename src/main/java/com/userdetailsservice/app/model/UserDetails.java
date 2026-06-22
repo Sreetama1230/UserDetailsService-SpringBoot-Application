@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 @Entity
 public class UserDetails {
 
+
+
 	public UserDetails(Long id, String name, String role, String email, String phoneNo, String username, String country,
 			String state, String city, String syncToken) {
 		super();
@@ -139,7 +141,12 @@ public class UserDetails {
 		this.syncToken = syncToken;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "UserDetails [id=" + id + ", name=" + name + ", role=" + role + ", email=" + email + ", phoneNo="
+				+ phoneNo + ", username=" + username + ", country=" + country + ", state=" + state + ", city=" + city
+				+ ", syncToken=" + syncToken + "]";
+	}
 
 
 	
