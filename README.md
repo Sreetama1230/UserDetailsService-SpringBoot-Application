@@ -11,8 +11,8 @@ Production-grade user management microservice with idempotency, optimistic locki
 - Behavior:
 
 - First request with a new `requestId` → creates a new user using the provided request payload.
-- Subsequent requests with the same `requestId` → returns the already created user (no duplicate creation).
-  
+- Subsequent requests with the same `requestId` → returns the already created user from cache or DB (no duplicate creation).
+
 
 #### ✅ Benefits
 - Prevents duplicate records  
@@ -51,7 +51,7 @@ This approach implements a partial (sparse) update.
 
 #### Fetch One User by Id
 - Retrieve a user with the provided id.
-- Data will be checked in the cache first if present then it will return the data from cache.
+- Data will be checked in the cache first if present then it will return the data from cache (Redis).
 
 #### Fetch Users with Pagination
 - Supports pagination with default values:
@@ -67,11 +67,12 @@ This approach implements a partial (sparse) update.
 ---
 
 ## 🛠️ Tech Stack
-- Java
-- Spring Boot
+- Java 17
+- Spring Boot 3.x
 - Spring Data JPA
 - REST APIs
-
+- MySQL
+- Redis
 ---
 
 ## 📌 API Overview
