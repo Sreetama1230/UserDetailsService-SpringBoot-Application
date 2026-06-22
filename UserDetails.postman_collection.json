@@ -14,7 +14,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"role\":\"ADMIN\",\n    \"name\":\"Riya\",\n    \"username\":\"riya12345\",\n    \"email\":\"riya@123@gmail.com\",\n    \"phoneNo\":\"9867893420\",\n    \"country\":\"IND\",\n    \"state\":\"WB\",\n    \"city\":\"kolkata\"\n}",
+          "raw": "{\n    \"role\":\"ADMIN\",\n    \"name\":\"Priya\",\n    \"username\":\"riya12345\",\n    \"email\":\"riya12345gmail.com\",\n    \"phoneNo\":\"9862893420\",\n    \"country\":\"IND\",\n    \"state\":\"WB\",\n    \"city\":\"Kolkata\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -22,7 +22,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8080/user?requestid=afbcd",
+          "raw": "http://localhost:8080/user?requestid=a1b2c3d4",
           "protocol": "http",
           "host": [
             "localhost"
@@ -34,7 +34,7 @@
           "query": [
             {
               "key": "requestid",
-              "value": "afbcd"
+              "value": "a1b2c3d4"
             }
           ]
         }
@@ -48,7 +48,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"id\":4,\n    \"role\":\"STUDENT\",\n    \"name\":\"Riy78877a\",\n    \"username\":\"riya12345\",\n    \"email\":\"riya@123@gmail.com\",\n    \"phoneNo\":\"9867893420\",\n    \"country\":\"IND\",\n    \"state\":\"WB\",\n    \"city\":\"kolkata\"\n}",
+          "raw": "{\n    \"id\": 1,\n    \"name\": \"Priya\",\n    \"role\": \"ADMIN\",\n    \"email\": \"priya12345gmail.com\",\n    \"phoneNo\": \"9862893420\",\n    \"username\": \"riya12345\",\n    \"country\": \"INDia\",\n    \"state\": \"WB\",\n    \"city\": \"Kolkata\",\n    \"syncToken\":\"0\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -56,7 +56,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8080/user?requestid=afbcdh",
+          "raw": "http://localhost:8080/user",
           "protocol": "http",
           "host": [
             "localhost"
@@ -64,12 +64,6 @@
           "port": "8080",
           "path": [
             "user"
-          ],
-          "query": [
-            {
-              "key": "requestid",
-              "value": "afbcdh"
-            }
           ]
         }
       },
@@ -154,7 +148,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8080/user/12",
+          "raw": "http://localhost:8080/user/2",
           "protocol": "http",
           "host": [
             "localhost"
@@ -162,7 +156,7 @@
           "port": "8080",
           "path": [
             "user",
-            "12"
+            "2"
           ]
         }
       },
@@ -186,7 +180,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8080/user",
+          "raw": "http://localhost:8080/user?pageNumber=0&pageSize=2",
           "protocol": "http",
           "host": [
             "localhost"
@@ -194,6 +188,16 @@
           "port": "8080",
           "path": [
             "user"
+          ],
+          "query": [
+            {
+              "key": "pageNumber",
+              "value": "0"
+            },
+            {
+              "key": "pageSize",
+              "value": "2"
+            }
           ]
         }
       },

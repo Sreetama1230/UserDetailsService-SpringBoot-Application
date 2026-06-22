@@ -70,7 +70,7 @@ public class UserDetailsControllerTests {
 
 	// get all
 	@Test
-	@Sql(statements = "INSERT INTO user_details(id,city,country,email,name,phone_no,username,role,state) VALUES (10009,'Pune','IND','priya@gmaail.com','Priya','9876541235','priya1234','ADMIN','MH')", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+	@Sql(statements = "INSERT INTO user_details(id,city,country,email,name,phone_no,username,role,state,sync_token) VALUES (10009,'Pune','IND','priya@gmaail.com','Priya','9876541235','priya1234','ADMIN','MH',0)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //	@Sql(statements = "DELETE FROM user_details WHERE id='10009'", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 	public void testGetAll() {
 		HttpEntity<String> entity = new HttpEntity<>(null, headers);
@@ -89,7 +89,7 @@ public class UserDetailsControllerTests {
 
 	// pagination
 	@Test
-	@Sql(statements = "INSERT INTO user_details(id,city,country,email,name,phone_no,username,role,state) VALUES (10009,'Pune','IND','priya@gmaail.com','Priya','9876541235','priya1234','ADMIN','MH')", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+	@Sql(statements = "INSERT INTO user_details(id,city,country,email,name,phone_no,username,role,state,sync_token) VALUES (77777,'Pune','IND','priya@gmaail.com','Priya','9876541235','priya1234','ADMIN','MH',0)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //	@Sql(statements = "DELETE FROM user_details WHERE id='10009'", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 	public void testGetAllByPagination() {
 		HttpEntity<String> entity = new HttpEntity<>(null, headers);
@@ -106,21 +106,19 @@ public class UserDetailsControllerTests {
 	}
 
 	@Test
-	@Sql(statements = "INSERT INTO user_details(id,city,country,email,name,phone_no,username,role,state,sync_token) "
-			+ "VALUES (100066,'Pune','IND','priya@gmail.com','Priya','9876541235','priya1234','ADMIN','MH',0)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-
+	@Sql(statements = "INSERT INTO user_details(id,city,country,email,name,phone_no,username,role,state,sync_token) VALUES (7777,'Pune','IND','priya@gmail.com','Priya','9876541235','priya1234','ADMIN','MH',0)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 	public void testGetById() throws JsonProcessingException {
 		HttpEntity<String> entity = new HttpEntity<>(null, headers);
-		ResponseEntity<UserDetails> resp = testRestTemplate.exchange(createURLWithPort() + "/100066", HttpMethod.GET,
+		ResponseEntity<UserDetails> resp = testRestTemplate.exchange(createURLWithPort() + "/7777", HttpMethod.GET,
 				entity, UserDetails.class);
 
 		UserDetails details = resp.getBody();
-		String expected = "{\"id\":100066,\"name\":\"Priya\",\"role\":\"ADMIN\",\"email\":\"priya@gmail.com\",\"phoneNo\":\"9876541235\",\"username\":\"priya1234\",\"country\":\"IND\",\"state\":\"MH\",\"city\":\"Pune\",\"syncToken\":\"0\"}";
+		System.out.println(details);
+		String expected = "{\"id\":7777,\"name\":\"Priya\",\"role\":\"ADMIN\",\"email\":\"priya@gmail.com\",\"phoneNo\":\"9876541235\",\"username\":\"priya1234\",\"country\":\"IND\",\"state\":\"MH\",\"city\":\"Pune\",\"syncToken\":\"0\"}";
 		assertEquals(expected, objectMapper.writeValueAsString(details));
-		assert details != null;
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		assertEquals(details.getCity(), userDetailsService.getById(100066).getCity());
-		assertEquals(details.getCity(), userDetailsRepository.findById(100066L).orElse(null).getCity());
+		assertEquals(details.getCity(), userDetailsService.getById(7777).getCity());
+		assertEquals(details.getCity(), userDetailsRepository.findById(7777L).orElse(null).getCity());
 
 	}
 
