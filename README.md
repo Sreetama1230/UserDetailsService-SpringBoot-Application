@@ -30,7 +30,14 @@ Production-grade user management microservice with idempotency, optimistic locki
   - `@ControllerAdvice`
   - `@ExceptionHandler`
 - Provides consistent and structured error responses.
+```
+{
+    "name": "UserNotFoundException",
+    "code": "404 NOT_FOUND",
+    "message": "no user found with this id"
+}
 
+```
 ---
 
 ### 3. Unified Create & Update API (POST Based)
