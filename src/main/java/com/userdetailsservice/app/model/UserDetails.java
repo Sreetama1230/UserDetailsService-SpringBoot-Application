@@ -9,23 +9,7 @@ import jakarta.persistence.Id;
 @Entity
 public class UserDetails {
 
-
-
-	public UserDetails(Long id, String name, String role, String email, String phoneNo, String username, String country,
-			String state, String city, String syncToken) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.role = role;
-		this.email = email;
-		this.phoneNo = phoneNo;
-		this.username = username;
-		this.country = country;
-		this.state = state;
-		this.city = city;
-		this.syncToken = syncToken;
-	}
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -140,6 +124,22 @@ public class UserDetails {
 		this.city = city;
 		this.syncToken = syncToken;
 	}
+	
+	public UserDetails(Long id, String name, String role, String email, String phoneNo, String username, String country,
+			String state, String city, String syncToken) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.role = role;
+		this.email = email;
+		this.phoneNo = phoneNo;
+		this.username = username;
+		this.country = country;
+		this.state = state;
+		this.city = city;
+		this.syncToken = syncToken;
+	}
+
 
 	@Override
 	public String toString() {
