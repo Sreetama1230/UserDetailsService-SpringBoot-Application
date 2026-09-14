@@ -1,7 +1,6 @@
 # User Details Service
 
-Production-grade user management microservice with idempotency, optimistic locking & Docker support.
-
+Developed a production-grade User Management microservice with support for idempotent APIs, optimistic locking, and Docker-based deployment, ensuring data consistency, scalability, and reliable request processing.
 
 # Architecture
 <img width="2720" height="2960" alt="user_details_service_architecture" src="https://github.com/user-attachments/assets/01f3caf5-7df7-482b-aaf8-1129c3e10803" />
